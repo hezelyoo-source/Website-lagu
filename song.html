@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merry Christmas, I Miss You</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <video id="bg-video" autoplay muted loop playsinline>
+        <source src="christmas.mp4" type="video/mp4">
+    </video>
+
+    <div class="overlay"></div>
+    <div id="snow-container"></div>
+
+    <main class="container">
+
+        <p class="subtitle">✦ I MISS YOU ✦</p>
+
+        <h1>Merry Christmas, I Miss You</h1>
+
+        <p class="artist">ALEX CRICHTON</p>
+
+        <p class="heart">♡</p>
+
+        <div id="lyrics" class="lyric-in">
+            Press play
+        </div>
+
+        <div class="player">
+            <button id="playBtn" aria-label="Putar musik">▶</button>
+
+            <audio id="music" preload="auto">
+                <source src="lagu.mp3" type="audio/mpeg">
+            </audio>
+
+            <input
+                type="range"
+                id="progress"
+                min="0"
+                max="100"
+                value="0"
+                step="0.1"
+            >
+
+            <div class="time-row">
+                <span id="currentTime">0:00</span>
+                <span id="duration">0:56</span>
+            </div>
+        </div>
+
+        <p class="footer-text">I still miss you ♡</p>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
