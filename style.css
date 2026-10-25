@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Poppins:wght@300;400;500&display=swap');
 
 * {
@@ -8,29 +9,73 @@
 
 body {
     min-height: 100vh;
-    background: #080b10;
+    background: #080609;
     color: white;
     font-family: 'Poppins', sans-serif;
     overflow: hidden;
 }
 
+/* BACKGROUND VIDEO */
 #bg-video {
     position: fixed;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    z-index: -3;
-}
-
-.overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(3, 7, 13, 0.65);
     z-index: -2;
 }
 
-/* SEMUA KONTEN DI TENGAH */
+/* CINEMATIC OVERLAY + RED GLOW */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(88, 127, 242, 0.4);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* CAHAYA MERAH YANG BERGERAK LEMBUT */
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    width: 40vw;
+    height: 40vw;
+    min-width: 260px;
+    min-height: 260px;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.20;
+    pointer-events: none;
+    z-index: -1;
+    animation: glowMove 12s ease-in-out infinite alternate;
+}
+
+body::before {
+    background: #a31338;
+    top: -15%;
+    left: -15%;
+}
+
+body::after {
+    background: #6c152e;
+    right: -15%;
+    bottom: -20%;
+    animation-delay: -6s;
+}
+
+@keyframes glowMove {
+    from {
+        transform: translate(0, 0) scale(0.9);
+        opacity: 0.12;
+    }
+    to {
+        transform: translate(35px, 25px) scale(1.15);
+        opacity: 0.28;
+    }
+}
+
+/* KONTEN UTAMA */
 .container {
     position: relative;
     z-index: 2;
@@ -49,6 +94,7 @@ body {
     letter-spacing: 5px;
     color: #dfcba5;
     margin-bottom: 16px;
+    text-shadow: 0 0 15px rgba(223, 203, 165, 0.35);
 }
 
 h1 {
@@ -58,14 +104,33 @@ h1 {
     font-weight: 400;
     line-height: 1.1;
     margin-bottom: 12px;
+    text-shadow: 0 0 30px rgba(180, 35, 65, 0.25);
 }
 
 .artist {
     font-size: 13px;
     letter-spacing: 3px;
     margin-bottom: 12px;
+    color: #e7dede;
 }
 
+.heart {
+    color: #e7a0ad;
+    font-size: 28px;
+    text-shadow: 0 0 18px rgba(255, 70, 110, 0.65);
+    animation: heartBeat 2s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.13);
+    }
+}
+
+/* LIRIK */
 #lyrics {
     min-height: 65px;
     max-width: 90%;
@@ -75,6 +140,7 @@ h1 {
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(24px, 3vw, 36px);
     text-align: center;
+    text-shadow: 0 0 18px rgba(223, 203, 165, 0.2);
 }
 
 .lyric-in {
@@ -92,15 +158,19 @@ h1 {
     }
 }
 
-/* PLAYER DI TENGAH */
+/* MUSIC PLAYER */
 .player {
     width: min(360px, 90%);
     margin: 10px auto;
     padding: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 225, 230, 0.22);
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(15px);
+    background: rgba(20, 12, 18, 0.32);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow:
+        0 8px 35px rgba(0, 0, 0, 0.18),
+        0 0 25px rgba(140, 20, 50, 0.10);
     text-align: center;
 }
 
@@ -109,15 +179,18 @@ h1 {
     height: 50px;
     border: 1px solid #d8c6a4;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.10);
     color: white;
     font-size: 19px;
     cursor: pointer;
+    transition: 0.25s ease;
 }
 
 #playBtn:hover {
     background: #d8c6a4;
     color: #080b10;
+    box-shadow: 0 0 22px rgba(216, 198, 164, 0.35);
+    transform: scale(1.06);
 }
 
 #progress {
@@ -136,40 +209,15 @@ h1 {
     color: #ddd;
 }
 
-/* SALJU */
-#snow-container {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 1;
+.footer-text {
+    margin-top: 18px;
+    color: #e8c8ce;
+    font-size: 12px;
+    letter-spacing: 2px;
+    opacity: 0.85;
 }
 
-.snow {
-    position: absolute;
-    top: -20px;
-    color: white;
-    opacity: 0.7;
-    animation: snowFall linear forwards;
-}
-
-@keyframes snowFall {
-    to {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: 0;
-    }
-}
-
-@media (max-width: 600px) {
-    h1 {
-        font-size: 42px;
-    }
-
-    .subtitle {
-        letter-spacing: 3px;
-    }
-}
-
+/* LAPISAN ANIMASI */
 #snow-container {
     position: fixed;
     inset: 0;
@@ -178,18 +226,412 @@ h1 {
     z-index: 10;
 }
 
+/* SALJU */
 .snow {
     position: absolute;
     top: -20px;
     color: white;
-    text-shadow: 0 0 8px white;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
     animation: snowFall linear forwards;
     pointer-events: none;
+    will-change: transform, opacity;
 }
 
 @keyframes snowFall {
     to {
         transform: translateY(110vh) rotate(360deg);
         opacity: 0;
+    }
+}
+
+/* HATI MELAYANG */
+.floating-heart {
+    position: absolute;
+    bottom: -35px;
+    color: #ff8da6;
+    text-shadow: 0 0 12px rgba(255, 55, 100, 0.65);
+    animation: heartFloat linear forwards;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+@keyframes heartFloat {
+    0% {
+        transform: translate3d(0, 0, 0) rotate(0deg) scale(0.7);
+        opacity: 0;
+    }
+    15% {
+        opacity: 0.8;
+    }
+    50% {
+        transform: translate3d(25px, -50vh, 0) rotate(15deg) scale(1);
+        opacity: 0.7;
+    }
+    85% {
+        opacity: 0.5;
+    }
+    100% {
+        transform: translate3d(-20px, -110vh, 0) rotate(-15deg) scale(0.8);
+        opacity: 0;
+    }
+}
+
+/* HP */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 42px;
+    }
+
+    .subtitle {
+        letter-spacing: 3px;
+    }
+
+    .player {
+        padding: 18px;
+    }
+
+    body::before,
+    body::after {
+        filter: blur(75px);
+    }
+}
+
+/* PENGATURAN AKSESIBILITAS */
+@media (prefers-reduced-motion: reduce) {
+    body::before,
+    body::after,
+    .heart {
+        animation: none;
+    }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Poppins:wght@300;400;500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: #080609;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+}
+
+/* BACKGROUND VIDEO */
+#bg-video {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -3;
+    transform: scale(1.02);
+}
+
+/* CINEMATIC OVERLAY + RED GLOW */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(
+            ellipse at 15% 30%,
+            rgba(150, 15, 38, 0.30),
+            transparent 48%
+        ),
+        radial-gradient(
+            ellipse at 85% 70%,
+            rgba(115, 12, 32, 0.25),
+            transparent 45%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(3, 4, 9, 0.65),
+            rgba(12, 3, 9, 0.72),
+            rgba(3, 5, 10, 0.76)
+        );
+    z-index: -2;
+    pointer-events: none;
+}
+
+/* CAHAYA MERAH YANG BERGERAK LEMBUT */
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    width: 40vw;
+    height: 40vw;
+    min-width: 260px;
+    min-height: 260px;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.20;
+    pointer-events: none;
+    z-index: -1;
+    animation: glowMove 12s ease-in-out infinite alternate;
+}
+
+body::before {
+    background: #a31338;
+    top: -15%;
+    left: -15%;
+}
+
+body::after {
+    background: #6c152e;
+    right: -15%;
+    bottom: -20%;
+    animation-delay: -6s;
+}
+
+@keyframes glowMove {
+    from {
+        transform: translate(0, 0) scale(0.9);
+        opacity: 0.12;
+    }
+    to {
+        transform: translate(35px, 25px) scale(1.15);
+        opacity: 0.28;
+    }
+}
+
+/* KONTEN UTAMA */
+.container {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    width: 100%;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.subtitle {
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: #dfcba5;
+    margin-bottom: 16px;
+    text-shadow: 0 0 15px rgba(223, 203, 165, 0.35);
+}
+
+h1 {
+    max-width: 100%;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(38px, 6vw, 76px);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    text-shadow: 0 0 30px rgba(180, 35, 65, 0.25);
+}
+
+.artist {
+    font-size: 13px;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+    color: #e7dede;
+}
+
+.heart {
+    color: #e7a0ad;
+    font-size: 28px;
+    text-shadow: 0 0 18px rgba(255, 70, 110, 0.65);
+    animation: heartBeat 2s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.13);
+    }
+}
+
+/* LIRIK */
+#lyrics {
+    min-height: 65px;
+    max-width: 90%;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    color: #e8d7b8;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(24px, 3vw, 36px);
+    text-align: center;
+    text-shadow: 0 0 18px rgba(223, 203, 165, 0.2);
+}
+
+.lyric-in {
+    animation: fadeIn 0.8s ease both;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* MUSIC PLAYER */
+.player {
+    width: min(360px, 90%);
+    margin: 10px auto;
+    padding: 20px;
+    border: 1px solid rgba(255, 225, 230, 0.22);
+    border-radius: 20px;
+    background: rgba(20, 12, 18, 0.32);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow:
+        0 8px 35px rgba(0, 0, 0, 0.18),
+        0 0 25px rgba(140, 20, 50, 0.10);
+    text-align: center;
+}
+
+#playBtn {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #d8c6a4;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.10);
+    color: white;
+    font-size: 19px;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+#playBtn:hover {
+    background: #d8c6a4;
+    color: #080b10;
+    box-shadow: 0 0 22px rgba(216, 198, 164, 0.35);
+    transform: scale(1.06);
+}
+
+#progress {
+    display: block;
+    width: 100%;
+    margin-top: 18px;
+    accent-color: #dfcba5;
+    cursor: pointer;
+}
+
+.time-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #ddd;
+}
+
+.footer-text {
+    margin-top: 18px;
+    color: #e8c8ce;
+    font-size: 12px;
+    letter-spacing: 2px;
+    opacity: 0.85;
+}
+
+/* LAPISAN ANIMASI */
+#snow-container {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* SALJU */
+.snow {
+    position: absolute;
+    top: -20px;
+    color: white;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    animation: snowFall linear forwards;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+@keyframes snowFall {
+    to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* HATI MELAYANG */
+.floating-heart {
+    position: absolute;
+    bottom: -35px;
+    color: #ff8da6;
+    text-shadow: 0 0 12px rgba(255, 55, 100, 0.65);
+    animation: heartFloat linear forwards;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+@keyframes heartFloat {
+    0% {
+        transform: translate3d(0, 0, 0) rotate(0deg) scale(0.7);
+        opacity: 0;
+    }
+    15% {
+        opacity: 0.8;
+    }
+    50% {
+        transform: translate3d(25px, -50vh, 0) rotate(15deg) scale(1);
+        opacity: 0.7;
+    }
+    85% {
+        opacity: 0.5;
+    }
+    100% {
+        transform: translate3d(-20px, -110vh, 0) rotate(-15deg) scale(0.8);
+        opacity: 0;
+    }
+}
+
+/* HP */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 42px;
+    }
+
+    .subtitle {
+        letter-spacing: 3px;
+    }
+
+    .player {
+        padding: 18px;
+    }
+
+    body::before,
+    body::after {
+        filter: blur(75px);
+    }
+}
+
+/* PENGATURAN AKSESIBILITAS */
+@media (prefers-reduced-motion: reduce) {
+    body::before,
+    body::after,
+    .heart {
+        animation: none;
     }
 }

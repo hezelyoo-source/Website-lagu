@@ -44,11 +44,11 @@ playBtn.addEventListener("click", async () => {
         }
     } catch (error) {
         console.error("Audio gagal diputar:", error);
-        alert("Musik gagal diputar. Periksa file music.mp3.");
+        alert("Musik gagal diputar. Periksa file lagu.mp3.");
     }
 });
 
-// GANTI IKON SAAT MUSIK DIPUTAR / DIJEDA
+// IKON PLAY / PAUSE
 music.addEventListener("play", () => {
     playBtn.textContent = "Ⅱ";
 });
@@ -57,12 +57,12 @@ music.addEventListener("pause", () => {
     playBtn.textContent = "▶";
 });
 
-// TAMPILKAN DURASI LAGU
+// DURASI LAGU
 music.addEventListener("loadedmetadata", () => {
     durationDisplay.textContent = formatTime(music.duration);
 });
 
-// UPDATE TIMER, PROGRESS, DAN LIRIK
+// UPDATE WAKTU, PROGRESS, DAN LIRIK
 music.addEventListener("timeupdate", () => {
     const now = music.currentTime;
 
@@ -94,49 +94,100 @@ music.addEventListener("timeupdate", () => {
     }
 });
 
-// GESER PROGRESS BAR UNTUK MENCARI BAGIAN LAGU
+// KEMBALI KE AWAL SAAT LAGU SELESAI
+music.addEventListener("ended", () => {
+    playBtn.textContent = "▶";
+    progress.value = 0;
+    currentTime.textContent = "0:00";
+    activeLyric = -1;
+});
+
+// GESER PROGRESS BAR
 progress.addEventListener("input", () => {
     if (Number.isFinite(music.duration) && music.duration > 0) {
-        music.currentTime = (Number(progress.value) / 100) * music.duration;
+        music.currentTime =
+            (Number(progress.value) / 100) * music.duration;
     }
 });
 
-// COBA AUTOPLAY SAAT HALAMAN DIBUKA
+// AUTOPLAY (JIKA DIIZINKAN BROWSER)
 window.addEventListener("load", async () => {
     try {
         await music.play();
     } catch (error) {
         playBtn.textContent = "▶";
-        console.log("Autoplay diblokir browser. Klik tombol Play.");
+        console.log("Autoplay diblokir. Klik tombol Play.");
     }
 });
 
-// EFEK SALJU TURUN
-function createSnow() {
-    if (!snowContainer) return;
+// CEK LAPISAN ANIMASI
+if (snowContainer) {
+    // BATAS PARTIKEL AGAR TIDAK TERLALU BERAT
+    const maxSnow = 65;
+    const maxHearts = 12;
 
-    const snow = document.createElement("span");
+    // MEMBUAT SALJU
+    function createSnow() {
+        if (snowContainer.querySelectorAll(".snow").length >= maxSnow) {
+            return;
+        }
 
-    snow.className = "snow";
-    snow.textContent = Math.random() > 0.5 ? "❄" : "✦";
-    snow.style.left = Math.random() * 100 + "vw";
-    snow.style.fontSize = (Math.random() * 10 + 8) + "px";
-    snow.style.opacity = Math.random() * 0.6 + 0.3;
+        const snow = document.createElement("span");
 
-    const duration = Math.random() * 5 + 5;
-    snow.style.animationDuration = duration + "s";
+        snow.className = "snow";
+        snow.textContent = Math.random() > 0.5 ? "❄" : "✦";
+        snow.style.left = Math.random() * 100 + "vw";
+        snow.style.fontSize = (Math.random() * 10 + 8) + "px";
+        snow.style.opacity = Math.random() * 0.6 + 0.3;
 
-    snowContainer.appendChild(snow);
+        const duration = Math.random() * 5 + 5;
+        snow.style.animationDuration = duration + "s";
 
-    setTimeout(() => {
-        snow.remove();
-    }, duration * 1000);
-}
+        snowContainer.appendChild(snow);
 
-// SALJU MUNCUL TERUS
-setInterval(createSnow, 180);
+        setTimeout(() => {
+            snow.remove();
+        }, duration * 1000);
+    }
 
-// SALJU AWAL
-for (let i = 0; i < 25; i++) {
-    setTimeout(createSnow, i * 100);
+    // MEMBUAT HATI MELAYANG
+    function createHeart() {
+        if (
+            snowContainer.querySelectorAll(".floating-heart").length >= maxHearts
+        ) {
+            return;
+        }
+
+        const heart = document.createElement("span");
+
+        heart.className = "floating-heart";
+        heart.textContent = Math.random() > 0.5 ? "♡" : "♥";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = (Math.random() * 12 + 12) + "px";
+        heart.style.opacity = Math.random() * 0.4 + 0.3;
+
+        const duration = Math.random() * 5 + 8;
+        heart.style.animationDuration = duration + "s";
+
+        snowContainer.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, duration * 1000);
+    }
+
+    // MULAI ANIMASI SALJU
+    setInterval(createSnow, 250);
+
+    // MULAI ANIMASI HATI
+    setInterval(createHeart, 1200);
+
+    // PARTIKEL AWAL
+    for (let i = 0; i < 20; i++) {
+        setTimeout(createSnow, i * 100);
+    }
+
+    for (let i = 0; i < 4; i++) {
+        setTimeout(createHeart, i * 700);
+    }
 }
