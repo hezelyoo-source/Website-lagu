@@ -25,11 +25,11 @@ body {
     z-index: -2;
 }
 
-/* CINEMATIC OVERLAY + RED GLOW */
+/* CINEMATIC OVERLAY + SKY BLUE */
 .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(88, 127, 242, 0.4);
+    background: rgba(75, 196, 239, 0.4);
     z-index: -1;
     pointer-events: none;
 }
